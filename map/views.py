@@ -78,9 +78,6 @@ def getNewMap(option):
     g_lat = g.lat
     g_long = g.lng
 
-    g_lat = 30.255167094456542
-    g_long = -97.88506611619871
-
     new_map = folium.Map(location=[g_lat,g_long], zoom_start=mapSizeZoom)
 
     for i in range(5):
@@ -138,11 +135,11 @@ def addMarker(request):
         #for testing
         ##
         #######
-        random_lat = random.uniform(g_lat - 0.01 , g_lat + 0.01)
-        random_long = random.uniform(g_long - 0.01, g_long + 0.01)
+        #random_lat = random.uniform(g_lat - 0.01 , g_lat + 0.01)
+        #random_long = random.uniform(g_long - 0.01, g_long + 0.01)
 
-        currentMapPoints.append(random_lat)
-        currentMapPoints.append(random_long)
+        currentMapPoints.append(g_lat)
+        currentMapPoints.append(g_long)
         
         
         

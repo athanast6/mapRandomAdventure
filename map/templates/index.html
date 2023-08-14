@@ -8,6 +8,12 @@
   </head>
   <body>
 
+    {% load static %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    
+
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">RandomAdventure</a>
@@ -24,18 +30,34 @@
     </nav>
 
     <h1>Map Random Adventure</h1>
+    <h2 class = 'userLocation'>User Location</h2>
+
+    
 
 
-   
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-    <button type="submit">Submit</button>
-    </form>
+    <div class="container">
+        <div class = "row mt-4">
+            <div class = "col-md-10 offset-md-1">
+
+                {{new_map|safe}}
+                <p></p>
+                
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <button><a href ="{% url 'addMarker' %}">{{make_guess}}</a></button>  </p>
+    </div>
+
+    <p> Total Score is {{total_score|safe}}</p>
+
+    <button type = "submit" class = 'get-location'>Get my location.</button>
+    <script src = "{% static 'getLocation.js' %}"></script>
     
     <p text-align="center">Map Random Adventure is not responsible for any actions of the users of this website. Never place yourself in danger playing the game.</p>
       
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    
   </body>
 </html>

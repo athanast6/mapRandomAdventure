@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',map_views.index, name = 'index'),
     path('addMarker/',map_views.addMarker, name = 'addMarker'),
-    path('newGame/',map_views.newGame, name = 'newGame')
+    path('newGame/',map_views.newGame, name = 'newGame'),
+    path('newGame/startGame/',map_views.startGame, name = 'startGame'),
 ]

@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 import folium
 import geocoder
 import random
+import json
 from .forms import DropdownForm
 
 # Create your views here.
@@ -12,43 +13,85 @@ currentMapPoints = []
 
 numMarkersPlaced = 0
 
+userLat = 0
+userLon = 0
+curContext = None
+
 
 def index(request):
-    form = DropdownForm()
-    return render(request, 'newGame.html',{'form': form})
+    return render(request, 'index.html',curContext)
 
 def newGame(request):
+
+    
+    # Get the JSON data from the POST request
+    #print(request)
+    return render(request, 'newGame.html')
+
+    
+    
+        
     #create new game.
     #get type of game from form.
 
-    selected_option = None
+    #selected_option = None
 
+    
+        
+    """
+    form = DropdownForm(request.POST)
+    if form.is_valid():
+        selected_option = form.cleaned_data['dropdown']
+        if selected_option == 'option1':
+            print("Selected small map.")
+            context = getNewMap(selected_option)
+        elif selected_option == 'option2':
+            #index(request)
+            context = getNewMap(selected_option)
+        elif selected_option == 'option3':
+            context = getNewMap(selected_option)
+
+        else:
+            print("Error")
+        
+    """
+    
+
+    #else:
+        #form = DropdownForm()
+        #,{'form': form}
+        #return render(request, 'newGame.html')
+
+
+def startGame(request):
     if(request.method == 'POST'):
-        form = DropdownForm(request.POST)
-        if form.is_valid():
-            selected_option = form.cleaned_data['dropdown']
-            if selected_option == 'option1':
-                print("Selected small map.")
-                context = getNewMap(selected_option)
-            elif selected_option == 'option2':
-                #index(request)
-                context = getNewMap(selected_option)
-            elif selected_option == 'option3':
-                context = getNewMap(selected_option)
+        lat = float(request.POST.get('latitude'))
+        lon = float(request.POST.get('longitude'))
+        dataString = (request.body.decode("utf-8"))
+        print(dataString)
+        #lat = float(dataString[int(dataString.find("\n"))+10:int(dataString.find("\n")+20)])
+        #lon = float(dataString[int(dataString.find("longitude"))+11:int(dataString.find("longitude")+21)])
+        
+        #lat = 30
+        #lon = -90
 
-            else:
-                print("Error")
-            return render(request, 'index.html', context)
+        print(lat)
+        print(lon)
 
-    else:
-        form = DropdownForm()
-        return render(request, 'newGame.html',{'form': form})
+        
+
+        context = getNewMap("option1",lat,lon)
+
+        print("Got new map.")
+        
+        return render(request,'index.html',context)
+    
 
 
     
 
 
-def getNewMap(option):
+def getNewMap(option,lat,lon):
 
     selected_option = option
 
@@ -74,9 +117,12 @@ def getNewMap(option):
     numMarkersPlaced = 0
     currentMapPoints.clear()
 
-    g = geocoder.ip('me')
-    g_lat = g.lat
-    g_long = g.lng
+    #g = geocoder.ip('me')
+    g_lat = lat
+    g_long = lon
+
+    #g_lat = data.latitude
+    #g_long = data.longitude
 
     new_map = folium.Map(location=[g_lat,g_long], zoom_start=mapSizeZoom)
 
@@ -97,7 +143,7 @@ def getNewMap(option):
     new_map = new_map._repr_html_()
     context = {
         'new_map':new_map,
-        'lat_long':g.latlng,
+        'lat_long':{lat,lon},
         'page_title':pageTitle,
         'make_guess':"Make First Guess"
     }
